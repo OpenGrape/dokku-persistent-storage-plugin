@@ -18,7 +18,10 @@ if [[ -f "$PERSISTENT_FILE_PATH" ]]; then
     if [ ! -d $HOST_DIR/$directory ]; then
       mkdir -p $HOST_DIR/$directory
     fi
-    output="$output-v $HOST_DIR/$directory:$APP_DIR/$directory "
+    if [ ! -z $output ]; then
+      output="$output "
+    fi
+    output="$output-v $HOST_DIR/$directory:$APP_DIR/$directory"
   done
 fi
 
