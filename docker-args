@@ -25,4 +25,4 @@ if [[ -f "$PERSISTENT_FILE_PATH" ]]; then
   done
 fi
 
-echo "$STDIN$output"
+echo "$STDIN $output"
