@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+
+APP="$1"
+
+PERSISTENT_FILE="PERSISTENT_STORAGE"
+PERSISTENT_FILE_PATH="$DOKKU_ROOT/$APP/$PERSISTENT_FILE"
+
+HOST_DIR="$DOKKU_ROOT/$APP/.storages"
+APP_DIR="/app"
+
+output=""
+if [[ -f "$PERSISTENT_FILE_PATH" ]]; then
+  echo "-----> Starting linked volumes for $APP"
+  for directory in `cat $PERSISTENT_FILE_PATH`; do
+    directory=${directory%/}
+    directory=${directory#/}
+    if [ ! -d $HOST_DIR/$directory ]; then
+      mkdir -p $HOST_DIR/$directory
+    fi
+    if [ ! -z $output ]; then
+      output="$output, "
+    fi
+    output="$output$directory"
+  done
+fi
+
+echo "       Volumes: $output"
